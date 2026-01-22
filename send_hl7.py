@@ -9,7 +9,9 @@ import threading
 # --- DỮ LIỆU TEST ---
 FULL_DB = [
     # --- Huyết học (Group 1) ---
-    {"group": 1, "code": "WBC", "name": "Bach cau (WBC)", "unit": "G/L", "min": 4.0, "max": 10.0, "type": "range"},
+    {"group": 1, "code": "B-GROUP", "name": "Xác định nhóm máu (Hệ ABO, Rh)", "unit": "", "type": "b_type"},
+    {"group": 1, "code": "HBA1C", "name": "Kiểm tra đường huyết 3 tháng", "unit": "%", "min": 4.0, "max": 6.4, "type": "range"},
+    {"group": 1, "code": "WBC", "name": "Bach cau (WBC)", "unit": "mg/L", "min": 4.0, "max": 10.0, "type": "range"},
     {"group": 1, "code": "NEU", "name": "Bach cau trung tinh", "unit": "%", "min": 40, "max": 74, "type": "range"},
     {"group": 1, "code": "LYM", "name": "Bach cau Lympho", "unit": "%", "min": 19, "max": 48, "type": "range"},
     {"group": 1, "code": "RBC", "name": "Hong cau (RBC)", "unit": "T/L", "min": 4.0, "max": 5.5, "type": "range"},
@@ -43,7 +45,7 @@ FULL_DB = [
     {"group": 3, "code": "U_BIL", "name": "Bilirubin", "unit": "", "type": "qualitative"},
     {"group": 3, "code": "U_GLU", "name": "Urine Glucose", "unit": "mg/dL", "type": "qualitative"},
 
-    # --- Miễn dịch & Vi sinh ---
+    # --- Miễn dịch & Vi sinh (Group 4) ---
     {"group": 4, "code": "HBsAg", "name": "HBsAg", "unit": "S/CO", "type": "qualitative"},
     {"group": 4, "code": "AHCV", "name": "Anti-HCV", "unit": "S/CO", "type": "qualitative"},
     {"group": 4, "code": "HIV", "name": "HIV Ab/Ag", "unit": "S/CO", "type": "qualitative"},
@@ -59,7 +61,11 @@ def get_random_result(test_config, abnormal_rate=0.1):
     if t_type == "qualitative":
         if is_abnormal: return random.choice(["Dương tính", "Dương tính +"])
         return "Âm tính"
-   
+
+    if t_type == "b_type":
+        if is_abnormal: return random.choice(["A", "B", "AB", "O"])
+        return "O"
+
     val = 0.0
     if t_type == "range":
         val = random.uniform(test_config["min"], test_config["max"])
@@ -104,7 +110,7 @@ class HL7SimulatorApp:
        
         ttk.Label(frame_config, text="IP:").grid(row=0, column=0, padx=5, pady=5)
         self.entry_ip = ttk.Entry(frame_config)
-        self.entry_ip.insert(0, "192.168.0.105")
+        self.entry_ip.insert(0, "192.168.0.102")
         self.entry_ip.grid(row=0, column=1, padx=5, pady=5)
        
         ttk.Label(frame_config, text="Port:").grid(row=0, column=2, padx=5, pady=5)
